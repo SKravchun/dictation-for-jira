@@ -8,7 +8,7 @@
 ```
 cd static/speech-to-text
 ```
-
+```
 npm install
 ```
 npm run build
