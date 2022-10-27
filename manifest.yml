@@ -1,0 +1,27 @@
+modules:
+  jira:issuePanel:
+    - key: dictation-for-jira-speech-to-text-panel
+      resource: main
+      resolver:
+        function: resolver
+      title: Dictation for jira, compose your text by voice
+      viewportSize: medium
+      icon: https://cdn-icons-png.flaticon.com/512/2546/2546422.png
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/speech-to-text/build
+permissions:
+  scopes:
+    - write:jira-work
+    - read:jira-work
+  content:
+    styles:
+      - 'unsafe-inline'
+app:
+  id: ari:cloud:ecosystem::app/ed252869-2230-44c7-b575-06ec76fe1086
+
+
+

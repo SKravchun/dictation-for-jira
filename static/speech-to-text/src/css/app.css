@@ -1,0 +1,40 @@
+.buttonWrapper{
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.btnContainer{
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.recordBtn{
+    background-color: #f5f6f7;
+    margin-left: 1px;
+    border-radius: 50%;
+    color: #40506c;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 1px 1px 1px rgb(60 64 67 / 10%), 0 1px 3px 0 rgb(60 64 67 / 20%);
+}
+
+.recordBtn:hover{
+    background-color: #e1e1e1;
+}
+
+.helpBtn{
+    color: #42526e;
+}
+
+.helpBtn:hover{
+    color: #0052cc;
+}
+
+Button{
+    margin-left: 10px;
+}
