@@ -19,6 +19,9 @@ npm run build
 cd ../../
 ```
 ```
+npm install
+```
+```
 forge deploy
 ```
 ```
