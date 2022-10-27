@@ -1,18 +1,15 @@
 # Dictation for jira, compose your text by voice
 
-This project contains a Forge app written in Javascript that displays `Hello World!` in a Jira issue panel. 
-
-See [developer.atlassian.com/platform/forge/](https://developer.atlassian.com/platform/forge) for documentation and tutorials explaining Forge.
-
-## Requirements
-
-See [Set up Forge](https://developer.atlassian.com/platform/forge/set-up-forge/) for instructions to get set up.
-
 ## Quick start
 
 - Modify your app by editing the files in `static/speech-to-text/src/`.
 
-- Build your app (inside of the `static/speech-to-text` directory):
+
+```
+cd static/speech-to-text
+```
+
+npm install
 ```
 npm run build
 ```
