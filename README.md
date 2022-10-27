@@ -2,7 +2,7 @@
 
 ## Quick start
 
-- You must first have installed the Forge CLI`.
+- You must first have installed the Forge CLI.
 - If you don't have it, you can set it up using this lin: https://developer.atlassian.com/platform/forge/getting-started/
 
 
