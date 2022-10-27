@@ -15,10 +15,12 @@ npm install
 ```
 npm run build
 ```
+```
+cd ../../
+```
+```
 forge deploy
 ```
-
-- Install your app in an Atlassian site by running:
 ```
 forge install
 ```
