@@ -2,7 +2,8 @@
 
 ## Quick start
 
-- Modify your app by editing the files in `static/speech-to-text/src/`.
+- You must first have installed the Forge CLI`.
+- If you don't have it, you can set it up using this lin: https://developer.atlassian.com/platform/forge/getting-started/
 
 
 ```
