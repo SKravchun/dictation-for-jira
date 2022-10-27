@@ -10,9 +10,9 @@ See [Set up Forge](https://developer.atlassian.com/platform/forge/set-up-forge/)
 
 ## Quick start
 
-- Modify your app by editing the files in `static/hello-world/src/`.
+- Modify your app by editing the files in `static/speech-to-text/src/`.
 
-- Build your app (inside of the `static/hello-world` directory):
+- Build your app (inside of the `static/speech-to-text` directory):
 ```
 npm run build
 ```
