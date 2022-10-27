@@ -11,10 +11,9 @@ cd static/speech-to-text
 ```
 npm install
 ```
-npm run build
-```
 
-- Deploy your app by running:
+```
+npm run build
 ```
 forge deploy
 ```
