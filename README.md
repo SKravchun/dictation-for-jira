@@ -1,4 +1,4 @@
-# Dictation for jira, compose your text by voice
+# Dictation for Jira: compose your text by voice
 
 ## Quick start
 
