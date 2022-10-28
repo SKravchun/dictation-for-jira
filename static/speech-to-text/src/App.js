@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import SpeechRecognition, {useSpeechRecognition} from 'react-speech-recognition';
 import Button from '@atlaskit/button';
 import './css/app.css'
-import {useCallback, useState, useEffect} from "react";
+import {useRef, useCallback, useState, useEffect} from "react";
 import {requestJira, view, router} from '@forge/bridge';
 import TextArea from '@atlaskit/textarea';
 import VidAudioOnIcon from '@atlaskit/icon/glyph/vid-audio-on'
@@ -15,6 +15,12 @@ import Modal, {
   ModalTransition,
 } from '@atlaskit/modal-dialog';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle'
+import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
+import { G300 } from '@atlaskit/theme/colors';
+import { gridSize } from '@atlaskit/theme/constants';
+import { token } from '@atlaskit/tokens';
+import { AutoDismissFlag, FlagGroup } from '@atlaskit/flag';
+
 
 function App() {
 
@@ -24,6 +30,7 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const openModal = useCallback(() => setIsOpen(true), []);
   const closeModal = useCallback(() => setIsOpen(false), []);
+  const [flags, setFlags] = React.useState([]);
 
   let {
     transcript,
@@ -32,19 +39,44 @@ function App() {
     listening,
   } = useSpeechRecognition()
 
+
+
+  const addFlag = () => {
+    const newFlagId = flags.length + 1;
+    const newFlags = flags.slice();
+    newFlags.splice(0, 0, newFlagId);
+
+    setFlags(newFlags);
+  };
+
+  const handleDismiss = () => {
+    setFlags(flags.slice(1));
+  };
+
+  const select = () => {
+    // const selection =
+    return window.getSelection().toString()
+  }
+
   useEffect(() => {
-    if (finalTranscript) {
-      const space = ' '
-      const dot = '.'
-      setArea(area + space + firstSymbol(finalTranscript) + dot)
+    if (select()) {
+      console.log(select())
+      if (area.toLowerCase().includes(select().toLowerCase())) {
+        setArea(area.replace(select(), finalTranscript + ' '))
+        // setArea(text.replace(/ +/g, ' ').trim())
+        resetTranscript()
+      }
+    } else if (finalTranscript) {
+      setArea(area + ' ' + firstSymbol(finalTranscript) + '.')
       resetTranscript()
     }
+
   }, [finalTranscript])
   useEffect(() => {
 
     view.getContext().then(data => setContext(data.extension.issue.key));
+    console.log(view.getContext())
   }, []);
-
 
 
   const handleListing = () => {
@@ -57,6 +89,7 @@ function App() {
         continuous: true,
       });
     }
+    handleFocus()
   };
 
   const handleReset = () => {
@@ -69,19 +102,34 @@ function App() {
     return str[0].toUpperCase() + str.slice(1);
   }
 
-  async function getIssue(issueKey) {
-    const issueResponse = await requestJira(`/rest/api/2/issue/${issueKey}`);
-    const response = await issueResponse.json()
-    return response.fields.description
+  const searchInput = useRef(null)
+
+  function handleFocus(){
+    searchInput.current.focus()
   }
 
-  async function setLanguage(text, issueKey) {
+  async function getIssue(issueKey) {
+    const issueResponse = await requestJira(`/rest/api/3/issue/${issueKey}`);
+    const response = await issueResponse.json()
+    return response.fields.description.content
+  }
+
+  async function setDescription(text, issueKey) {
 
     const description = await getIssue(issueKey)
+    console.log(description)
 
-    if(text){
-      const fields = {
-        description: {
+    const fields = {}
+
+    fields.description = {
+      "type": "doc",
+      "version": 1,
+      "content": []
+    }
+
+    if (text) {
+      if (text && !description) {
+        fields.description = {
           "type": "doc",
           "version": 1,
           "content": [
@@ -89,14 +137,28 @@ function App() {
               "type": "paragraph",
               "content": [
                 {
-                  "text": description ? description + "\n" + text.trim() : text.trim(),
+                  "text": text.trim(),
                   "type": "text"
                 }
               ]
             }
           ]
         }
+      } else if (text && description) {
+        description.forEach((arr) => {
+          fields?.description?.content?.push(arr)
+        })
+        fields?.description?.content.push({
+          "type": "paragraph",
+          "content": [
+            {
+              "text": text.trim(),
+              "type": "text"
+            }
+          ]
+        })
       }
+
 
       const issueResponse = await requestJira(`/rest/api/3/issue/${issueKey}`, {
           method: 'PUT',
@@ -108,6 +170,8 @@ function App() {
         }
       );
     }
+    addFlag()
+
   }
 
   return (
@@ -127,12 +191,12 @@ function App() {
             <VidAudioOnIcon className="micro" label=""/>
           </div>
 
-          <Button onClick={openModal}>Clear</Button>
+          <Button isDisabled={!area} onClick={openModal}>Clear</Button>
 
           <Tooltip content="Text below will be appended to description">
             {(tooltipProps) => (
-              <Button {...tooltipProps} onClick={() => setLanguage(area, context)}>
-                Append to description
+              <Button isDisabled={!area} {...tooltipProps} onClick={() => setDescription(area, context)}>
+                Append to Description
               </Button>
             )}
           </Tooltip>
@@ -155,14 +219,15 @@ function App() {
         appearance="standard"
         placeholder="Enter your text here using keyboard or microphone"
         value={area}
+        ref={searchInput}
         onChange={(e) => setArea(e.target.value)}
       />
 
       <ModalTransition>
         {isOpen && (
-          <Modal isBlanketHidden = "false" width="small">
+          <Modal isBlanketHidden="false" width="small">
             <ModalHeader>
-              <ModalTitle>Clear textarea?</ModalTitle>
+              <ModalTitle>Clear text?</ModalTitle>
             </ModalHeader>
             <ModalFooter>
               <Button appearance="subtle" onClick={closeModal}>
@@ -178,6 +243,26 @@ function App() {
           </Modal>
         )}
       </ModalTransition>
+
+      <FlagGroup onDismissed={handleDismiss}>
+        {flags.map((flagId) => {
+          return (
+            <AutoDismissFlag
+              id={flagId}
+              icon={
+                <SuccessIcon
+                  primaryColor={token('color.icon.success', G300)}
+                  label="Success"
+                  size="medium"
+                />
+              }
+              key={flagId}
+              title={`#${flagId} Description updated`}
+              description="Refresh the page to see the changes."
+            />
+          );
+        })}
+      </FlagGroup>
 
     </Fragment>
   );
