@@ -4,9 +4,9 @@ modules:
       resource: main
       resolver:
         function: resolver
-      title: Dictation for jira, compose your text by voice
+      title: 'Dictation for jira, compose: your text by voice'
       viewportSize: medium
-      icon: https://cdn-icons-png.flaticon.com/512/2546/2546422.png
+      icon: https://i.ibb.co/Gs8DqZz/VA-logo.png
   function:
     - key: resolver
       handler: index.handler
