@@ -206,7 +206,7 @@ function App() {
           {(tooltipProps) => (
             <div {...tooltipProps} className="btnContainer">
               <div onClick={() => {
-                router.open('https://atlaskit.atlassian.com/');
+                router.open('https://saasjet.atlassian.net/wiki/spaces/SAASJET/pages/2448523294/Dictation+for+Jira');
               }} className="helpBtn">
                 <QuestionCircleIcon label=""/>
               </div>
