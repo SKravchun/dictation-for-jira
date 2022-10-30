@@ -48,7 +48,7 @@ function App() {
 
     setCommentFlags(newFlags);
   };
-
+  
   useEffect(() => {
     if (select()) {
       if (area.toLowerCase().includes(select().toLowerCase())) {
