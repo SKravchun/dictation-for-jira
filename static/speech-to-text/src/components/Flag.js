@@ -23,7 +23,7 @@ const Flag = ({setFlags, flags, action}) => {
               />
             }
             key={flagId}
-            title={`#${flagId} ${action}`}
+            title={`${action}`}
             description="Refresh the page to see the changes."
           />
         );

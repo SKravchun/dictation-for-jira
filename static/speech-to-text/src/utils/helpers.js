@@ -11,7 +11,7 @@ function handleFocus(textareaInput) {
   textareaInput.current.focus()
 }
 
-export const handleListing = (setIsListening, SpeechRecognition, listening) => {
+export const handleListing = (setIsListening, SpeechRecognition, listening, textareaInput) => {
   if (listening) {
     setIsListening(false);
     SpeechRecognition.stopListening();
@@ -21,7 +21,7 @@ export const handleListing = (setIsListening, SpeechRecognition, listening) => {
       continuous: true,
     });
   }
-  handleFocus()
+  handleFocus(textareaInput)
 };
 
 export const handleReset = (resetTranscript, setArea) => {

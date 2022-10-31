@@ -48,7 +48,7 @@ function App() {
 
     setCommentFlags(newFlags);
   };
-  
+
   useEffect(() => {
     if (select()) {
       if (area.toLowerCase().includes(select().toLowerCase())) {
@@ -91,7 +91,7 @@ function App() {
                   backgroundColor: listening ? '#e41a1a' : '',
                   color: listening ? 'white' : '',
                 }}
-                onClick={() => handleListing(setIsListening, SpeechRecognition, listening)}>
+                onClick={() => handleListing(setIsListening, SpeechRecognition, listening, textareaInput)}>
                 <VidAudioOnIcon className="micro" label=""/>
               </div>
             )}
@@ -111,7 +111,7 @@ function App() {
           <Tooltip content="A comment will be created from the text below">
             {(tooltipProps) => (
               <Button isDisabled={!area} {...tooltipProps} onClick={() => createComment(area, context, newCommentFlag)}>
-                Create comment
+                Add a Comment
               </Button>
             )}
           </Tooltip>
@@ -140,7 +140,7 @@ function App() {
 
       <ClearModal handleReset={() => handleReset(resetTranscript, setArea)} isOpen={isOpen} setIsOpen={setIsOpen}/>
       <Flag setFlags={setDescriptionFlags} flags={descriptionFlags} action={'Description updated'}/>
-      <Flag setFlags={setCommentFlags} flags={commentFlags} action={'Comment created'}/>
+      <Flag setFlags={setCommentFlags} flags={commentFlags} action={'The text has been added'}/>
     </Fragment>
   );
 }
